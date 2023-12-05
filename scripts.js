@@ -1,3 +1,21 @@
+import {
+    createOrderHtml,
+    html,
+    updateDraggingHtml,
+    moveToColumn,
+
+} from './view.js'
+
+// import {
+//     TABLES,
+//     COLUMNS,
+//     state,
+//     createOrderData,
+//     updateDragging
+// } from './data.js'
+
+
+
 /**
  * A handler that fires when a user drags over any element inside a column. In
  * order to determine which column the user is dragging over the entire event
@@ -28,14 +46,56 @@ const handleDragOver = (event) => {
 }
 
 
-const handleDragStart = (event) => {}
-const handleDragEnd = (event) => {}
-const handleHelpToggle = (event) => {}
-const handleAddToggle = (event) => {}
-const handleAddSubmit = (event) => {}
-const handleEditToggle = (event) => {}
-const handleEditSubmit = (event) => {}
-const handleDelete = (event) => {}
+const handleDragStart = (event) => {
+    const { orderId } = event.target.dataset;
+    event.dataTransfer.setData('text/plain', orderId);
+}
+const handleDragEnd = (event) => {
+    const { orderId } = event.target.dataset;
+}
+const handleHelpToggle = (event) => {
+    const helpOverlay = document.getElementById('helpOverlay');
+    helpOverlay.classList.toggle('show');
+    if (helpOverlay.classList.contains('show')) {
+        document.getElementById('addOrderButton').focus();
+    }
+}
+const handleAddToggle = (event) => {
+    const addOverlay = document.getElementById('addOverlay');
+    addOverlay.classList.toggle('show');
+    if (addOverlay.classList.contains('show')) {
+        clearAddOrderForm();
+        document.getElementById('addOrderText').focus();
+    } else {
+        document.getElementById('addOrderButton').focus();
+    }
+}
+const handleAddSubmit = (event) => {
+    event.preventDefault();
+    const orderText = document.getElementById('addOrderText').value;
+    const orderTable = document.getElementById('addOrderTable').value;
+}
+const handleEditToggle = (event) => {
+    const orderId = event.target.dataset.orderId;
+    const editOverlay = document.getElementById('editOverlay');
+    editOverlay.classList.toggle('show');
+    if (editOverlay.classList.contains('show')) {
+        fillEditOrderForm(orderId);
+        document.getElementById('editOrderText').focus();
+    } else {
+        document.getElementById('addOrderButton').focus();
+    }
+}
+const handleEditSubmit = (event) => {
+    event.preventDefault();
+    const orderId = document.getElementById('editOrderId').value;
+    const orderText = document.getElementById('editOrderText').value;
+    const orderTable = document.getElementById('editOrderTable').value;
+    const orderStatus = document.getElementById('editOrderStatus').value;
+}
+const handleDelete = (event) => {
+    const orderId = event.target.dataset.orderId;
+}
 
 html.add.cancel.addEventListener('click', handleAddToggle)
 html.other.add.addEventListener('click', handleAddToggle)
